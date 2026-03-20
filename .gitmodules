@@ -1,0 +1,3 @@
+[submodule "external/laff"]
+	path = external/laff
+	url = https://github.com/Shoko-official/LAFF-University-of-Texas.git
