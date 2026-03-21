@@ -4,13 +4,13 @@
 namespace llm {
 
     Matrix Sigmoid::forward(const Matrix& input) {
-        int m = input.m;
-        int n = input.n;
+        int batch_size = input.m;
+        int feat_dim = input.n;
         
-        last_output = Matrix(m, n);
+        last_output = Matrix(batch_size, feat_dim);
 
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
+        for (int i = 0; i < batch_size; i++) {
+            for (int j = 0; j < feat_dim; j++) {
                 double val = input(i, j);
                 last_output(i, j) = 1.0 / (1.0 + std::exp(-val));
             }
@@ -20,13 +20,13 @@ namespace llm {
     }
 
     Matrix Sigmoid::backward(const Matrix& grad_output) {
-        int m = grad_output.m;
-        int n = grad_output.n;
+        int batch_size = grad_output.m;
+        int feat_dim = grad_output.n;
         
-        Matrix grad_input(m, n);
+        Matrix grad_input(batch_size, feat_dim);
 
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
+        for (int i = 0; i < batch_size; i++) {
+            for (int j = 0; j < feat_dim; j++) {
                 double s = last_output(i, j);
                 grad_input(i, j) = grad_output(i, j) * s * (1.0 - s);
             }
