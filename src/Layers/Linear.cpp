@@ -24,14 +24,13 @@ namespace llm {
         int batch_size = input.m;
         Matrix output(batch_size, out_dim);
 
+        // Y = XW
+        laff::gemm(1.0, input, weights, 0.0, output);
+
+        // Y = Y + b (Bias addition)
         for (int i = 0; i < batch_size; i++) {
-            for (int j = 0; j < out_dim; j++) {
-                double sum = 0.0;
-                for (int k = 0; k < in_dim; k++) {
-                    sum += input(i, k) * weights(k, j);
-                }
-                output(i, j) = sum + bias(0, j);
-            }
+            Matrix output_row = output.row(i);
+            laff::add_matrix(bias, output_row);
         }
 
         return output;
@@ -42,26 +41,14 @@ namespace llm {
         Matrix grad_input(batch_size, in_dim);
 
         // Gradient w.r.t input: dX = dY * W^T
-        for (int i = 0; i < batch_size; i++) {
-            for (int j = 0; j < in_dim; j++) {
-                double sum = 0.0;
-                for (int k = 0; k < out_dim; k++) {
-                    sum += grad_output(i, k) * weights(j, k);
-                }
-                grad_input(i, j) = sum;
-            }
-        }
+        Matrix weights_T(out_dim, in_dim);
+        laff::transpose(weights, weights_T);
+        laff::gemm(1.0, grad_output, weights_T, 0.0, grad_input);
 
         // Gradient w.r.t weights: dW = X^T * dY
-        for (int i = 0; i < in_dim; i++) {
-            for (int j = 0; j < out_dim; j++) {
-                double sum = 0.0;
-                for (int k = 0; k < batch_size; k++) {
-                    sum += last_input(k, i) * grad_output(k, j);
-                }
-                grad_weights(i, j) = sum;
-            }
-        }
+        Matrix input_T(in_dim, batch_size);
+        laff::transpose(last_input, input_T);
+        laff::gemm(1.0, input_T, grad_output, 0.0, grad_weights);
 
         // Gradient w.r.t bias: db = sum(dY, axis=0)
         for (int j = 0; j < out_dim; j++) {
