@@ -3,14 +3,14 @@
 namespace llm {
 
     Matrix ReLU::forward(const Matrix& input) {
-        int m = input.m;
-        int n = input.n;
+        int batch_size = input.m;
+        int feat_dim = input.n;
         
-        Matrix output(m, n);
-        mask = Matrix(m, n);
+        Matrix output(batch_size, feat_dim);
+        mask = Matrix(batch_size, feat_dim);
 
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
+        for (int i = 0; i < batch_size; i++) {
+            for (int j = 0; j < feat_dim; j++) {
                 double val = input(i, j);
                 if (val > 0.0) {
                     output(i, j) = val;
@@ -26,13 +26,13 @@ namespace llm {
     }
 
     Matrix ReLU::backward(const Matrix& grad_output) {
-        int m = grad_output.m;
-        int n = grad_output.n;
+        int batch_size = grad_output.m;
+        int feat_dim = grad_output.n;
         
-        Matrix grad_input(m, n);
+        Matrix grad_input(batch_size, feat_dim);
 
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
+        for (int i = 0; i < batch_size; i++) {
+            for (int j = 0; j < feat_dim; j++) {
                 grad_input(i, j) = grad_output(i, j) * mask(i, j);
             }
         }
