@@ -46,6 +46,14 @@ target_include_directories(llm_layers PUBLIC
 )
 target_link_libraries(llm_layers PRIVATE laff)
 
-
 enable_testing()
-# More tests coming soon
+
+# Activation gradient check
+add_executable(activation_grad_check tests/activation_grad_check.cpp)
+target_include_directories(activation_grad_check PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+)
+target_link_libraries(activation_grad_check PRIVATE llm_layers laff)
+
+add_test(NAME activation_grad_check COMMAND activation_grad_check)
