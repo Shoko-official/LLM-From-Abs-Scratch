@@ -1,7 +1,11 @@
-#define _USE_MATH_DEFINES
 #include "Layers/GELU.hpp"
+#include <cmath>
 
 namespace llm {
+
+    namespace {
+        constexpr double PI = 3.14159265358979323846;
+    }
 
     // GELU approximation: 0.5x(1 + tanh(sqrt(2/pi)(x + 0.044715x^3)))
     Matrix GELU::forward(const Matrix& input) {
@@ -11,7 +15,7 @@ namespace llm {
         last_input = input;
         Matrix output(batch_size, feat_dim);
 
-        const double sqrt_2_over_pi = std::sqrt(2.0 / M_PI);
+        const double sqrt_2_over_pi = std::sqrt(2.0 / PI);
 
         for (int i = 0; i < batch_size; i++) {
             for (int j = 0; j < feat_dim; j++) {
@@ -30,7 +34,7 @@ namespace llm {
         
         Matrix grad_input(batch_size, feat_dim);
 
-        const double sqrt_2_over_pi = std::sqrt(2.0 / M_PI);
+        const double sqrt_2_over_pi = std::sqrt(2.0 / PI);
 
         for (int i = 0; i < batch_size; i++) {
             for (int j = 0; j < feat_dim; j++) {

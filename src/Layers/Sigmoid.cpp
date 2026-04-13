@@ -1,5 +1,5 @@
-#define _USE_MATH_DEFINES
 #include "Layers/Sigmoid.hpp"
+#include <cmath>
 
 namespace llm {
 
