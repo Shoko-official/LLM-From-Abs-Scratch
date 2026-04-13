@@ -1,8 +1,8 @@
 #ifndef LAYER_HPP
 #define LAYER_HPP
 
-#include "external/laff/Laff.hpp"
-#include "external/laff/Matrix.hpp"
+#include "laff/Laff.hpp"
+#include "laff/Matrix.hpp"
 
 /*
  * Base Layer Abstraction.

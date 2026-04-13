@@ -1,4 +1,5 @@
 #include "Layers/Tanh.hpp"
+#include <cmath>
 
 namespace llm {
 
