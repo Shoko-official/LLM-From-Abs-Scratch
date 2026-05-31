@@ -17,11 +17,27 @@ This repository is currently focused on the foundations needed for transformer-s
 
 ## Build
 
-```bash
+Required locally:
+
+- CMake 3.10+
+- A C++17 compiler
+- LAFF checked out under `external/laff`
+
+```sh
+git submodule update --init --recursive
+```
+
+```sh
 cmake -S . -B build
 cmake --build build
 ctest --test-dir build --output-on-failure
 ```
+
+Useful CMake switches:
+
+- `-DLLM_BUILD_TESTS=OFF`
+- `-DLLM_ENABLE_WARNINGS=OFF`
+- `-DLLM_WARNINGS_AS_ERRORS=ON`
 
 ## Project status
 
@@ -33,4 +49,3 @@ This is an early learning/research project, not yet a complete LLM implementatio
 - Add examples showing forward and backward passes.
 - Add a small transformer block once tensor and layer primitives are stable.
 - Add CI for Linux builds.
-- Document the `external/laff` dependency and setup process.
