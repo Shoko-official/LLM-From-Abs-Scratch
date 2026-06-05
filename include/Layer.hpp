@@ -8,8 +8,6 @@
  * Base Layer Abstraction.
  * Every component of the network must implement the forward and backward 
  * passes.
- * 
- * Implemented by Shoko on 2026/03/20
  */
 namespace llm {
 
